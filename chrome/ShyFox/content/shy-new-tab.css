@@ -96,13 +96,22 @@ Styles for new tab
       background-color: var(--tr-col) !important;
       backdrop-filter: blur(var(--blur-radius));
     }
-    .search-wrapper {padding: 40px 0 30px !important;}
+    .search-wrapper {padding: 0px 0 30px !important;}
+    .outer-wrapper > main {
+      justify-content: center !important;
+      align-items: center !important;
+      background: none !important;
+    }
     .logo-and-wordmark {display: flex !important;}
   }
   
   @media (height <= 700px) {
-    .search-wrapper {padding: 40px 0 30px !important;}
-    .outer-wrapper > main {margin-top: 0px !important;}
+    .search-wrapper {padding: 0px 0 30px !important;}
+    .outer-wrapper > main {
+      justify-content: center !important;
+      align-items: center !important;
+      background: none !important;
+    }
   }
   
   
