@@ -9,7 +9,7 @@ Shrink some things so they take up less space
 
 @media not (-moz-platform: macos) {
   .menupopup-arrowscrollbox,
-  #context-navigation > .menuitem-iconic {border-radius: var(--big-rounding) !important;}
+  #context-navigation > .menuitem-iconic {border-radius: var(--big-rounding) !important; padding-left: 5px;}
 }
 
 #context-navigation > .menuitem-iconic[disabled="true"] {background-color: transparent !important;}
@@ -26,11 +26,11 @@ menupopup > :is(menuitem, menu){
   margin: 0 !important;
   
   padding-block: 0px !important;
-  padding-inline-start: 5px !important;
+  padding-inline-start: 10px !important;
 }
 
 /* large context menu */
-@media (-moz-bool-pref: "shyfox.larger.context.menu"){
+@media -moz-pref("shyfox.larger.context.menu"){
   menupopup > :is(menuitem, menu) > * {padding: 5px 0px !important;}
 }
 
@@ -45,7 +45,7 @@ menupopup > :is(menuitem, menu){
 
 */
 
-@media not (-moz-bool-pref: "shyfox.disable.compact.unified.extensions") {
+@media not -moz-pref("shyfox.disable.compact.unified.extensions") {
 
   #unified-extensions-view{
 

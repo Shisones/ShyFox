@@ -263,9 +263,8 @@ Navigation bar on top of the window
       
       /* hotfix */
       #urlbar{
-        visibility: visible !important;
-        transition: visibility 0s linear var(--trans-dur);
-        min-width: var(--urlbar-width) !important;
+        opacity: 0;
+        transition: var(--trans-dur);
       }
 
       

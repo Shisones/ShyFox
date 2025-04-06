@@ -23,6 +23,12 @@ Area where website is displayed
   transition: var(--transition) !important;
 }
 
+#browser:not(.browser-toolbox-background) {
+  :root[lwtheme] & {
+    background-image: none !important;
+  }
+}
+ 
 /* completely remove the browser interface in fullscreen videos and popups like login with Google or in a floating Bitwarden window */
 #main-window:is(:not([chromehidden=""]), [inDOMFullscreen="true"]){
   #navigator-toolbox {display: none !important;}
@@ -57,7 +63,7 @@ Area where website is displayed
       position: absolute;
       inset: 0;
       border-radius: var(--big-rounding);
-      box-shadow: 0 0 0 100px var(--bg-col) !important;
+      box-shadow: 0 0 0 25px var(--bg-col) !important;
       clip-path: inset(0);
       pointer-events: none;
     }
@@ -194,8 +200,8 @@ Styles for dialogs e.g. "confirm deleting extension"
     position: fixed;
     z-index: -1;
     
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     
     left: 0px;
     top: 0px;
@@ -301,23 +307,10 @@ Apply theme colors to context menus and menubar
 
 */
 
-/* in page context menu */
+/* https://github.com/hazyfossa/ShyFox/commit/7c4769e6f1deb57d1d347f7836b08a0eca5b15ca
+/* toolbar and context menu */
 #contentAreaContextMenu[showservicesmenu="true"],
-#contentAreaContextMenu[showservicesmenu="true"] menupopup
-{
-  --panel-background: var(--bg-col)!important;
-  --panel-border-color: var(--tb-col) !important;
-  
-  --toolbar-field-focus-background-color: var(--bt-col) !important;
-  --panel-color: var(--bt-col) !important;  
-  
-  menu:where([_moz-menuactive="true"]:not([disabled="true"])), menuitem:where([_moz-menuactive="true"]:not([disabled="true"])) {
-    background-color: var(--panel-item-hover-bgcolor) !important;
-    color: var(--bt-col) !important;
-  }
-}
-
-/* toolbar menu */
+#contentAreaContextMenu[showservicesmenu="true"] menupopup,
 #toolbar-menubar menupopup,
 #toolbar-context-menu, #toolbar-context-menu menupopup,
 #unified-extensions-context-menu, #unified-extensions-context-menu menupopup,
@@ -334,14 +327,24 @@ Apply theme colors to context menus and menubar
   --panel-color: var(--bt-col) !important;  
   
   menu:where([_moz-menuactive="true"]:not([disabled="true"])), menuitem:where([_moz-menuactive="true"]:not([disabled="true"])) {
-    background-color: var(--panel-item-hover-bgcolor) !important;
+    background-color: var(--toolbarbutton-hover-background) !important;
     color: var(--bt-col) !important;
   }
+
+  menu:where([disabled="true"]), menuitem:where([disabled="true"]) {
+    background-color: transparent !important;
+  }
+}
+
+/* override background for in-page context menu */
+#contentAreaContextMenu[showservicesmenu="true"],
+#contentAreaContextMenu[showservicesmenu="true"] menupopup {
+  --panel-background: var(--bg-col)!important;
 }
 
 /* dropdown selectors */
 menupopup {--content-select-background-image: none !important;}
-#ContentSelectDropdown .ContentSelectDropdown-item-0:not([_moz-menuactive="true"]) {background-color: transparent !important;;}
+#ContentSelectDropdown .ContentSelectDropdown-item-0:not([_moz-menuactive="true"]) {background-color: transparent !important;}
 
 /*
 
@@ -567,6 +570,13 @@ File Edit View History Bookmarks Tools Help
   border: 0px solid transparent; 
   outline: 0px solid transparent;
 }
+
+/* Fix Naezr 198, credits to github.com/hazyfossa */
+:root:not([windowtype="Toolkit:PictureInPicture"]) {
+  #navigator-toolbox {z-index: 2 !important;}
+  #browser {z-index: 1 !important;}
+}
+ 
 
 /*
 

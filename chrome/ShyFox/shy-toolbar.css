@@ -131,6 +131,9 @@ Tab bar has been transformed into vertical toolbar on the right side of the wind
   }
 }
 
+/* omit margin (from github.com/ShadowRZ) */
+& > .toolbaritem-combined-buttons {margin-inline: 0 !important;}
+
 /* space for window controls */
 #main-window:not([titlepreface*="​"]){
   #TabsToolbar,

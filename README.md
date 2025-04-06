@@ -11,8 +11,30 @@
 
 <br>
 
-> [!WARNING]
-> This theme is not maintained right now and can be broken
+> This is my personal fork of Shyfox by Naezr. some settings might be changed or replaced
+<details><summary>Personal Tweaks</summary>
+
+<br/>
+
+Personal:
+- Changed sidebar width to `275px`
+- Changed Accent to `#5E81AC`
+
+Patches:
+- Changed `moz-bool-pref` to `moz-pref` for context menu not working
+- Fixes [Naezr/242](https://github.com/Naezr/ShyFox/issues/242) Sidebar issue
+- Fixes [Naezr/238](https://github.com/Naezr/ShyFox/issues/238) New tab (somewhat)
+- Fixes [Naezr/237](https://github.com/Naezr/ShyFox/issues/237) Searchbar shadow issue
+- Fixes the annoying colorscheme not matching since Dec 2024 Firefox update
+- Fixes [Naezr/206](https://github.com/Naezr/ShyFox/issues/237) Alert box overflow
+- Added [hazyfossa/commit7c4769e
+](https://github.com/hazyfossa/ShyFox/commit/7c4769e6f1deb57d1d347f7836b08a0eca5b15ca) (fix context menu hover)
+
+Want to patch:
+- Shy findbar doesn't work, can't click on the searchbar :(
+- Corners of page is not perfect, it has 1 px of discoloration :(
+
+</details>
 
 <br/>
 

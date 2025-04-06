@@ -11,27 +11,25 @@ Values of these variables can be changed safely and most likely nothing will bre
 
 :root, #screenshots-component *{
   /* accent color */
-  --shy-accent-color: #3584E4;
+  --shy-accent-color: #5e81ac;
   
   /* window border thickness and size of many margins */
   --margin: 0.8rem;
   
   /* rounded corners radius of most elements */
-  --rounding: 11.5px;
-  --big-rounding: 15px;
-  --bigger-rounding: 20px;
-  --giant-rounding: 30px;
+  --rounding: 10px;
+  --big-rounding: 12.5px;
+  --bigger-rounding: 17.5px;
+  --giant-rounding: 25px;
   
   /* animations time */
   --trans-dur: 0.25s;
   
   /* width of some elements. 1vw is one hundredth of the screen width */
-  --sdbr-wdt: 300px;
-  
+  --sdbr-wdt: 275px;
   --navbar-wdt: 60vw;
-  
-  --findbar-wdt: 70vw;
-  
+  --findbar-wdt: 80vw;
+
   /* intensity of blur (new tab) */
   --blur-radius: 10px;
   
@@ -65,7 +63,7 @@ Values of these variables can be changed safely and most likely nothing will bre
 /* accent color toggle */
 :root{--shy-color: var(--shy-accent-color)}
 
-@media (-moz-bool-pref: "shyfox.fill.accent.with.icons.fill.color"){
+@media -moz-pref("shyfox.fill.accent.with.icons.fill.color"){
   :root{--shy-color: var(--toolbar-color, var(--shy-accent-color)) !important;}
 }
 

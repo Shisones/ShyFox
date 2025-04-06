@@ -96,13 +96,15 @@ Styles for new tab
       background-color: var(--tr-col) !important;
       backdrop-filter: blur(var(--blur-radius));
     }
+    .search-wrapper {padding: 40px 0 30px !important;}
     .logo-and-wordmark {display: flex !important;}
   }
   
   @media (height <= 700px) {
-    .search-wrapper {padding: 20px 0 30px !important;}
+    .search-wrapper {padding: 40px 0 30px !important;}
     .outer-wrapper > main {margin-top: 0px !important;}
   }
+  
   
   /* margin to logo when only search is enabled */
   .only-search .logo-and-wordmark {margin-top: 20px !important;}
@@ -116,10 +118,10 @@ Styles for new tab
   }
   
   /* dark wallpaper */
-  :root[lwt-newtab-brighttext] body {background-image: url("../../wallpaper.png") !important;}
+  :root[lwt-newtab-brighttext] body {background-image: url("../../wallpaper-lisa.jpg") !important;}
   
   /* light wallpaper */                                      /* `wallpaper.png` will be used when `-light` one does not exist */
-  :root:not([lwt-newtab-brighttext]) body {background-image: url("../../wallpaper-light.png"), url("../../wallpaper.png") !important;}
+  :root:not([lwt-newtab-brighttext]) body {background-image: url("../../wallpaper-lisa.jpg"), url("../../wallpaper-lisa.jpg") !important;}
   
   /* central box */
   main{
