@@ -126,11 +126,6 @@ Styles for new tab
     background-attachment: fixed !important;
   }
   
-  /* dark wallpaper */
-  :root[lwt-newtab-brighttext] body {background-image: url("../../wallpaper-lisa.jpg") !important;}
-  
-  /* light wallpaper */                                      /* `wallpaper.png` will be used when `-light` one does not exist */
-  :root:not([lwt-newtab-brighttext]) body {background-image: url("../../wallpaper-lisa.jpg"), url("../../wallpaper-lisa.jpg") !important;}
   
   /* central box */
   main{
