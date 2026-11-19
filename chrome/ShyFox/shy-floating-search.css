@@ -90,6 +90,13 @@ results popover is positioned against the viewport instead of the navbar.
     opacity: 0 !important;
   }
 
+  /* While the floating search is open it must paint above the sidebar/Sidebery
+     (which sits at the toolbox's layer): raise the toolbar stacking context
+     for the duration of the search. */
+  #main-window:has(#urlbar:is([focused], [open])) #navigator-toolbox {
+    z-index: 3 !important;
+  }
+
   /* The page is deliberately left untinted while the floating search is open. */
 
   /* Recommendation list: same opaque toolbar colour as the floating bar.
