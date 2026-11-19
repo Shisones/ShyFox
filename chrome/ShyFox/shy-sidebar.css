@@ -65,6 +65,9 @@ Styles for sidebar
   background-color: var(--tb-col) !important;
 }
 
+/* The bookmark bar always sits below the sidebar panel/indication line. */
+#PersonalToolbar { z-index: 1 !important; }
+
 /* The page itself is opaque, so it has to be clipped to the panel's rounded
    corners; otherwise it paints square over the rounded box (visible in the
    hovering hidden sidebar). */
@@ -230,6 +233,11 @@ Styles for sidebar
       top var(--trans-dur) ease-out,
       width var(--trans-dur) ease-out,
       height var(--trans-dur) ease-out !important;
+  }
+
+  /* The bookmark bar stays behind the sidebar's indication line on hover. */
+  #PersonalToolbar {
+    z-index: 1 !important;
   }
 
   /* styles for sidebar */

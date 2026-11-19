@@ -37,7 +37,7 @@ Area where website is displayed
 
 /* some z-index */
 #navigator-toolbox {z-index: 2 !important;}
-#browser {z-index: 1 !important;}
+#browser {z-index: auto !important;}
 
 /* if it not fullscreen video or floating window */
 #main-window:not([inDOMFullscreen="true"]):not([popup-window], [chromehidden~="toolbar"]){
@@ -587,7 +587,7 @@ File Edit View History Bookmarks Tools Help
 /* Fix Naezr 198, credits to github.com/hazyfossa */
 :root:not([windowtype="Toolkit:PictureInPicture"]) {
   #navigator-toolbox {z-index: 2 !important;}
-  #browser {z-index: 1 !important;}
+  #browser {z-index: auto !important;}
 }
  
 
