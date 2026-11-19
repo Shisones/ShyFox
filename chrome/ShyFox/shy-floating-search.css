@@ -119,13 +119,19 @@ results popover is positioned against the viewport instead of the navbar.
   #urlbar[open] .urlbarView {
     /* overlap only the bar's bottom padding (icons end at 39px of the 50px
        bar); -11px stops the results panel from overpainting the icons */
-    margin-top: -11px !important;
+    /* same left/right edges as the bar: drop the native negative side margin
+       and the manual nudge, so the panel follows the bar exactly */
+    margin: -11px 0 0 0 !important;
     width: 64vw !important;
-    /* exact: the anchored view lands 3px left of the bar */
-    translate: 3px 0 !important;
+    translate: none !important;
     border: var(--outline) !important;
     border-top: none !important;
     outline: none !important;
+    /* same shadow as the bar, minus the top band (that is the join) */
+    box-shadow:
+      2px 0 0 var(--shadow-col),
+      -2px 0 0 var(--shadow-col),
+      0 2px 0 var(--shadow-col) !important;
     border-radius: 0 0 var(--bigger-rounding) var(--bigger-rounding) !important;
     overflow: clip !important;
   }
@@ -136,6 +142,11 @@ results popover is positioned against the viewport instead of the navbar.
        element's height/anchoring. */
     background-color: var(--tb-col) !important;
     border-radius: var(--bigger-rounding) var(--bigger-rounding) 0 0 !important;
+    /* the bar's share of the outer shadow; the results panel draws the rest */
+    box-shadow:
+      2px 0 0 var(--shadow-col),
+      -2px 0 0 var(--shadow-col),
+      0 -2px 0 var(--shadow-col) !important;
   }
 
   /* Firefox uses this span for the search-mode switch/hotkey hint; the
