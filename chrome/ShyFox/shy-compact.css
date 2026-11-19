@@ -16,11 +16,13 @@ Shrink some things so they take up less space
 
 menupopup > :is(menuitem, menu){
   height: fit-content !important;
-  & > * {
+  /* Keep native icon/arrow children at their own UA padding/margin; the
+     compact spacing is only for the label and other light-DOM children. */
+  & > :not(img, .menu-iconic-left) {
     padding: 0px !important;
     margin: 1px !important;
   }
-  
+
   max-width: 300px !important;
   border-radius: var(--rounding) !important;
   margin: 0 !important;
@@ -31,7 +33,7 @@ menupopup > :is(menuitem, menu){
 
 /* large context menu */
 @media -moz-pref("shyfox.larger.context.menu"){
-  menupopup > :is(menuitem, menu) > * {padding: 5px 0px !important;}
+  menupopup > :is(menuitem, menu) > :not(img, .menu-iconic-left) {padding: 5px 0px !important;}
 }
 
 /* margin for some menus */
