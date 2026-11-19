@@ -172,6 +172,11 @@ Tab bar has been transformed into vertical toolbar on the right side of the wind
     bottom: auto;
     z-index: 3 !important;
   }
+
+  /* match the top icon inset to the left/right icon padding (8.5px) */
+  #PanelUI-menu-button {
+    margin-top: 1.5px !important;
+  }
   
   /* styles for tabs toolbar */
   #TabsToolbar{
@@ -229,7 +234,7 @@ Tab bar has been transformed into vertical toolbar on the right side of the wind
     /* make the toolbar height dynamic */
     position: relative !important;
     top: 0px !important;
-    padding-bottom: 3px !important;
+    padding-bottom: 3.5px !important;
     
     /* styled spacer */
     toolbarspring{
