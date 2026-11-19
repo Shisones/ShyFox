@@ -17,9 +17,9 @@ Values of these variables can be changed safely and most likely nothing will bre
   --margin: 0.8rem;
   
   /* rounded corners radius of most elements */
-  --rounding: 10px;
-  --big-rounding: 12.5px;
-  --bigger-rounding: 17.5px;
+  --rounding: 12px;
+  --big-rounding: 15px;
+  --bigger-rounding: 20px;
   --giant-rounding: 25px;
   
   /* animations time */
