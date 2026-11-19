@@ -8,7 +8,7 @@ Tab bar has been transformed into vertical toolbar on the right side of the wind
 */
 
 /* if toolbar is not hidden, this window is not floating popup and not in fullscreen video */
-#main-window:not(:is([titlepreface*="​"], [titlepreface*="‍"]))[chromehidden=""]:not([inDOMFullscreen="true"]){
+#main-window:not(:is([titlepreface*="​"], [titlepreface*="‍"])):not([popup-window], [chromehidden~="toolbar"]):not([inDOMFullscreen="true"]){
   /* set right margin to toolbar width */
   --right-margin: var(--toolbar-button-wdt);
 }
@@ -329,4 +329,91 @@ Tab bar has been transformed into vertical toolbar on the right side of the wind
     right: 10px !important;
     .toolbarbutton-icon {opacity: 0.5 !important;}
   }
+}
+
+
+/* extension highlight: same 32px box as the menu button */
+#unified-extensions-button > .toolbarbutton-icon {
+  width: var(--tab-min-height) !important;
+  height: var(--tab-min-height) !important;
+  min-width: var(--tab-min-height) !important;
+  min-height: var(--tab-min-height) !important;
+  padding: calc((var(--tab-min-height) - 16px) / 2) !important;
+  border-radius: var(--rounding) !important;
+  scale: 1 !important;
+}
+
+/*
+
+--- RIGHT TOOLBAR: UNIFORM ITEM SPACING -------------------------------------------------------------------------------------------------------------
+
+Every toolbar item uses the same 45x40 box and the same 32x32 centred content
+box. That gives identical left/right (6.5px) and top/bottom (4px) insets around
+every icon. Layout/order/separator behaviour is left unchanged.
+
+*/
+
+#TabsToolbar-customization-target > toolbarbutton,
+#PanelUI-menu-button,
+#unified-extensions-button {
+  width: var(--toolbar-button-wdt) !important;
+  min-width: var(--toolbar-button-wdt) !important;
+  max-width: var(--toolbar-button-wdt) !important;
+  height: var(--toolbar-item-hgt) !important;
+  min-height: var(--toolbar-item-hgt) !important;
+  max-height: var(--toolbar-item-hgt) !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#TabsToolbar-customization-target > toolbarbutton > .toolbarbutton-icon,
+#TabsToolbar-customization-target > toolbarbutton > .toolbarbutton-badge-stack,
+#PanelUI-menu-button > .toolbarbutton-badge-stack,
+#unified-extensions-button > .toolbarbutton-icon {
+  width: var(--tab-min-height) !important;
+  height: var(--tab-min-height) !important;
+  min-width: var(--tab-min-height) !important;
+  min-height: var(--tab-min-height) !important;
+  padding: calc((var(--tab-min-height) - 16px) / 2) !important;
+  margin: 0 auto !important;
+  border-radius: var(--rounding) !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+/* Hidden toolbar: same uniform 40px rhythm, with the spring as a centred
+   1px separator whose top/bottom margins make its spacing identical to the
+   icon-to-icon spacing. */
+#main-window:is([titlepreface*="​"], [titlepreface*="‍"]):not([customizing]) #TabsToolbar-customization-target {
+  justify-content: flex-start !important;
+  align-content: flex-start !important;
+}
+
+#main-window:is([titlepreface*="​"], [titlepreface*="‍"]):not([customizing]) #TabsToolbar-customization-target > toolbarbutton {
+  height: var(--toolbar-item-hgt) !important;
+  min-height: var(--toolbar-item-hgt) !important;
+  max-height: var(--toolbar-item-hgt) !important;
+  margin-block: 0 !important;
+}
+
+#main-window:is([titlepreface*="​"], [titlepreface*="‍"]):not([customizing]) #TabsToolbar-customization-target > toolbarspring {
+  flex: 0 0 auto !important;
+  width: 50% !important;
+  min-width: 0 !important;
+  max-width: 50% !important;
+  height: 1px !important;
+  min-height: 1px !important;
+  max-height: 1px !important;
+  padding: 0 !important;
+  margin: calc((var(--toolbar-item-hgt) - 1px) / 2) auto !important;
+  border-radius: var(--rounding) !important;
+  background-color: color-mix(in srgb, var(--bt-col) 15%, transparent) !important;
+  scale: 1 !important;
 }

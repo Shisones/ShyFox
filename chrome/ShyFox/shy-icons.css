@@ -183,7 +183,7 @@ Monochrome icons for some extensions
 .subviewbutton:not(#appMenu-proton-update-banner) > image 
 {
   fill: currentColor !important;
-  fill-opacity: var(--toolbarbutton-icon-fill-opacity) !important;
+  fill-opacity: var(--toolbarbutton-icon-fill-opacity, 1) !important;
   -moz-context-properties: fill, fill-opacity, stroke !important;
 }
 
@@ -316,7 +316,7 @@ Monochrome icons for some extensions
   
   /* icons color and position */
   fill: currentColor !important;
-  fill-opacity: var(--toolbarbutton-icon-fill-opacity) !important;
+  fill-opacity: var(--toolbarbutton-icon-fill-opacity, 1) !important;
   -moz-context-properties: fill, fill-opacity, stroke !important;
   background-repeat: no-repeat !important;
   background-position-x: 5px !important;
@@ -495,7 +495,7 @@ Monochrome icons for some extensions
   }
   
   /* bookmarks button menu */
-  #main-window:has(#PersonalToolbar[collapsed="true"]) #BMB_bookmarksPopup #BMB_viewBookmarksToolbar {background-image: url("../icons/eye-show.svg") !important;}
+  #main-window:has(#PersonalToolbar[collapsed]) #BMB_bookmarksPopup #BMB_viewBookmarksToolbar {background-image: url("../icons/eye-show.svg") !important;}
   #BMB_bookmarksPopup{
     #BMB_viewBookmarksToolbar {background-image: url("../icons/eye-hide.svg") !important;}
     #BMB_viewBookmarksSidebar {background-image: url("chrome://browser/skin/sidebars.svg") !important;}

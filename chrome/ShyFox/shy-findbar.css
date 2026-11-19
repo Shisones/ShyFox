@@ -8,15 +8,27 @@ Ctrl + F
 findbar{
   --findbar-pad: 8px;
   --fndbr-btn-wdt: 30px;
+
+  /* 80vw normally, but never wider than the page area between the panels. */
+  --fndbr-real-wdt: min(
+    var(--findbar-wdt),
+    calc(
+      100vw
+      - var(--left-margin)
+      - var(--right-margin)
+      - var(--margin) * 2
+    )
+  );
   
   position: fixed !important;
   z-index: 5 !important;
   
   bottom: calc(var(--bottom-margin) + var(--margin));
   left: calc(
-    (
+    var(--left-margin)
+    + (
       100vw
-      - var(--findbar-wdt)
+      - var(--fndbr-real-wdt)
       - var(--left-margin)
       - var(--right-margin)
     ) / 2
@@ -24,7 +36,7 @@ findbar{
   
   height: calc(var(--toolbar-item-hgt) * 2);
   padding-top: var(--toolbar-item-hgt) !important;
-  width: var(--findbar-wdt);
+  width: var(--fndbr-real-wdt);
   
   /* styles for input textbox */
   .findbar-textbox{
@@ -32,7 +44,7 @@ findbar{
     top: var(--findbar-pad);
     left: var(--findbar-pad);
     width: calc(
-      var(--findbar-wdt) 
+      var(--fndbr-real-wdt) 
       - var(--findbar-pad) * 2.5
       - var(--fndbr-btn-wdt) * 3
     ) !important;
@@ -81,14 +93,6 @@ findbar[hidden]{
   ) !important;
 }
 
-/* adaptive findbar width */
-@media (max-width: 1500px) {
-   :root{
-     --findbar-wdt: calc(
-       100vw
-       - var(--left-margin)
-       - var(--right-margin)
-       - var(--margin) * 2
-     ) !important;
-  }
-}
+/* The adaptive width is handled by --fndbr-real-wdt above; keeping the bar at
+   80vw (instead of full content width) is what makes it look centred even on
+   narrower windows. */

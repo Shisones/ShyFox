@@ -9,3 +9,24 @@
 @import url("ShyFox/shy-compact.css");
 @import url("ShyFox/shy-icons.css");
 @import url("ShyFox/shy-floating-search.css");
+@import url("ShyFox/shy-nova.css");
+
+/* Hide scrollbars globally (chrome UI). */
+* { scrollbar-width: none !important; }
+
+/* Keep the root at Firefox's default font size so rem-based ShyFox spacing
+   (--margin: 0.8rem) stays 12.8px. The old * rule also hit :root, which shrank
+   every window border to 10.4px and made panels look cramped. */
+*:not(:root) {
+    font-size: 13px !important;
+    font-family: "Inter Medium", "Inter", system-ui, sans-serif !important;
+}
+
+/* The sidebar web-extension host document is a chrome:// document, so
+   userContent.css cannot reach it. Paint it with the toolbar colour literally
+   so its very first frame is never white (-moz-dialog can be white). */
+@-moz-document url("chrome://browser/content/webext-panels.xhtml") {
+  html, body, #webextpanels-window, #webext-panels-stack, #webext-panels-browser {
+    background-color: #2b2a33 !important;
+  }
+}

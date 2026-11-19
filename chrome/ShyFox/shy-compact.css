@@ -12,7 +12,7 @@ Shrink some things so they take up less space
   #context-navigation > .menuitem-iconic {border-radius: var(--big-rounding) !important; padding-left: 5px;}
 }
 
-#context-navigation > .menuitem-iconic[disabled="true"] {background-color: transparent !important;}
+#context-navigation > .menuitem-iconic[disabled] {background-color: transparent !important;}
 
 menupopup > :is(menuitem, menu){
   height: fit-content !important;

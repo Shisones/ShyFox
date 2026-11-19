@@ -12,6 +12,8 @@
 <br>
 
 > This is my personal fork of Shyfox by Naezr. some settings might be changed or replaced
+>
+> **Firefox 160 / Nova:** this checkout is the working setup. See [`FIREFOX-160-NOTES.md`](FIREFOX-160-NOTES.md) for the compatibility changes; `user.js` and `sidebery-settings.json` are the matching prefs/settings.
 <details><summary>Personal Tweaks</summary>
 
 <br/>

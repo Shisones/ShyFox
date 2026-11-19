@@ -45,7 +45,7 @@ Values of these variables can be changed safely and most likely nothing will bre
   
   /* size of the panel hitbox outside the window border */
   --panel-hide-ldg: 1px;            /* f11 fullscreen   */
-  &:not([inFullscreen="true"]){
+  &:not([inFullscreen]){
     --panel-hide-ldg: 0px;          /* maximized window */ 
     &[sizemode="normal"]:not([titlepreface*="‍"]){
       --panel-hide-ldg: 9px;        /* floating window  */
@@ -64,7 +64,7 @@ Values of these variables can be changed safely and most likely nothing will bre
 :root{--shy-color: var(--shy-accent-color)}
 
 @media -moz-pref("shyfox.fill.accent.with.icons.fill.color"){
-  :root{--shy-color: var(--toolbar-color, var(--shy-accent-color)) !important;}
+  :root{--shy-color: var(--toolbar-text-color, var(--toolbar-color, var(--shy-accent-color))) !important;}
 }
 
 /* 
@@ -80,24 +80,25 @@ Reserved values and all sorts of dynamic variables. You should not touch them.
   --ActiveCaption: ActiveCaption;
   
   /* pick browser colors */                                           /* used for:          */ 
-  --bg-col: var(--lwt-accent-color, var(--ActiveCaption, tomato));    /* darker background  */       /* tomato is the fallback color */
-  --tb-col: var(--toolbar-bgcolor, tomato);                           /* lighter background */       /* meaning something went wrong */
+  --bg-col: var(--lwt-accent-color, var(--toolbox-background-color, var(--ActiveCaption, tomato)));    /* darker background  */       /* tomato is the fallback color */
+  --tb-col: var(--toolbar-background-color, var(--toolbar-bgcolor, tomato));                           /* lighter background */       /* meaning something went wrong */
   --bt-col: var(--toolbarbutton-icon-fill);                           /* text or icons      */
-  --pp-col: var(--arrowpanel-background);                             /* popup color        */
+  --pp-col: var(--panel-background-color, var(--arrowpanel-background, var(--tb-col)));                             /* popup color        */
   
   /* dynamic opacity */
   --dyn-opct: 1;
   &:-moz-window-inactive{--dyn-opct: var(--inactive-opct);}
   
   /* shared shortcuts for commonly used parameters */
-  --outline: 1px solid var(--arrowpanel-background);      /* outline around almost anything              */
+  --outline: 1px solid var(--panel-background-color, var(--arrowpanel-background));      /* outline around almost anything              */
   --shadow: 2px solid var(--shadow-col);                  /* translucent outline that imitates a shadow  */
   --transition: all var(--trans-dur) ease-out;            /* animation for smooth transitions            */
   
   /* constant variables */
   --toolbar-item-hgt: 40px;       /* height of all panels elements: buttons, urlbar, etc.                                   */
   --toolbar-button-wdt: 45px;     /* width of all panels buttons                                                            */
-  --hide-bar-padding: 3px;        /* how much indicator bars showing the position of hidden panels is thinner than --margin */
+  --hide-bar-size: calc(var(--margin) - 6px); /* same ~5px line the right-hand navbar always had */
+  --hide-bar-padding: calc(var(--margin) / 2 - var(--hide-bar-size) / 2); /* keeps those bars centred in the window border */
   --screenshot-tool-hgt: 145px;   /* height of `ctrl + shift + s` tool buttons  */
   
   /* hiding the window border in fullscreen mode and assigning --margin to it in windowed mode */
@@ -106,7 +107,7 @@ Reserved values and all sorts of dynamic variables. You should not touch them.
   --top-margin:    0px;
   --bottom-margin: 0px; 
   
-  &:not(:is([inFullscreen="true"], [inDOMFullscreen="true"], [titlepreface*="‍"]:is([sizemode="maximized"], [gtktiledwindow="true"]))){
+  &:not(:is([inFullscreen], [inDOMFullscreen="true"], [titlepreface*="‍"]:is([sizemode="maximized"], [gtktiledwindow="true"]))){
     --left-margin:   var(--margin);
     --right-margin:  var(--margin);
     --top-margin:    var(--margin);
@@ -114,7 +115,7 @@ Reserved values and all sorts of dynamic variables. You should not touch them.
   }
   
   /* hide indication bars in fullscreen or clean mode */
-  &:is([inFullscreen="true"], [inDOMFullscreen="true"], [titlepreface*="‍"]){
+  &:is([inFullscreen], [inDOMFullscreen="true"], [titlepreface*="‍"]){
     --hide-bar-opct: 0 !important;
   }
   
@@ -122,7 +123,7 @@ Reserved values and all sorts of dynamic variables. You should not touch them.
   --arrowpanel-border-radius: var(--big-rounding) !important;
   --panel-border-radius:      var(--big-rounding) !important;
   
-  --arrowpanel-menuitem-border-radius: var(--rounding) !important;
+  --panel-menuitem-border-radius: var(--rounding) !important;
   --toolbarbutton-border-radius:       var(--rounding) !important;
   --button-border-radius:              var(--rounding) !important;
   --border-radius-small:               var(--rounding) !important;
@@ -130,6 +131,7 @@ Reserved values and all sorts of dynamic variables. You should not touch them.
   
   /* override one padding in navbar to match style */
   --toolbar-start-end-padding: calc(var(--margin) / 2) !important;
+  --toolbar-padding-inline: calc(var(--margin) / 2) !important;
   
   /* fix bookmark toolbar */
   --bookmarks-toolbar-overlapping-browser-height: 0px !important;

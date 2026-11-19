@@ -1,0 +1,84 @@
+/*== ShyFox · Firefox 156+ / Nova compatibility =====================================================================================================
+
+Firefox 156 removed `chromehidden` and Firefox 160 ships the "Nova" redesign.
+A few things ShyFox relied on moved or were renamed; the selector/color fixes
+are applied directly in the other files, this file keeps the Nova-specific
+overrides together.
+
+Imported last from userChrome.css so it can correct earlier rules.
+
+*/
+
+/*
+
+--- NATIVE SIDEBAR / VERTICAL TABS -------------------------------------------------------------------------------------------------------------------
+
+ShyFox manages tabs with Sidebery in the legacy sidebar. Firefox's own vertical
+tab strip (Nova) otherwise steals #tabbrowser-tabs and shifts the content area.
+
+*/
+
+#sidebar-container,
+#sidebar-launcher-splitter,
+#vertical-tabs {
+  display: none !important;
+}
+
+/* Firefox collapses #TabsToolbar when sidebar.verticalTabs is on. ShyFox uses
+   that toolbar as its right-hand button strip, so never let it collapse. */
+#TabsToolbar[collapsed] {
+  visibility: visible !important;
+  display: flex !important;
+}
+
+/* When the tab strip is "hidden", Firefox shows its own window controls in the
+   nav bar. ShyFox moves the controls to the menubar instead. */
+#navigator-toolbox[tabs-hidden] > #nav-bar > .titlebar-buttonbox-container {
+  display: none !important;
+}
+
+/*
+
+--- CONTENT AREA -------------------------------------------------------------------------------------------------------------------------------------
+
+Nova draws a 1px top/left border on every .browserContainer. On top of
+#tabbrowser-tabbox's own 1px border that made the visible content border 2px
+on the top/left and 1px on the right/bottom.
+
+*/
+
+#tabbrowser-tabpanels .browserContainer,
+#tabbrowser-tabpanels .browserSidebarContainer {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/*
+
+--- URL BAR (NOVA CUSTOM ELEMENT) --------------------------------------------------------------------------------------------------------------------
+
+Nova replaced the old #urlbar-background / #urlbar-input ids with class-based
+children of the <moz-urlbar> custom element. The main rules were rewritten in
+shy-navbar.css and shy-floating-search.css; these are the Nova-only visual
+tweaks (Nova otherwise draws a full pill with a 24px radius).
+
+*/
+
+#urlbar {
+  --urlbar-border-radius: var(--rounding) !important;
+  --urlbarview-border-radius: var(--big-rounding) !important;
+  --urlbar-background-color: var(--toolbar-field-background-color) !important;
+  --urlbar-background-color-focus: var(--toolbar-field-background-color) !important;
+}
+
+#urlbar .urlbar-background {
+  border-radius: var(--rounding) !important;
+}
+
+/* ShyFox's fake URL bar in the hidden navbar uses #urlbar-container::before.
+   Nova paints a real background on .urlbar-background, so keep that one
+   rounded too. */
+#urlbar-container .urlbar-background {
+  outline: none !important;
+}

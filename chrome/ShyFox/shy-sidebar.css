@@ -14,13 +14,13 @@ Styles for sidebar
 }
 
 /* remove space reserved for bookmarks toolbar if it hidden */
-#main-window:has(#PersonalToolbar[collapsed="true"]) {
+#main-window:has(#PersonalToolbar[collapsed]) {
   --little-gap: 0px;
   --bookmarks-hgt: 0px;
 }
 
 /* if sidebar is not hidden or clean mode not enabled, this window is not floating popup and not in fullscreen video */
-#main-window:not(:is([titlepreface*="᠎"], [titlepreface*="‍"]))[chromehidden=""]:not([inDOMFullscreen="true"]){
+#main-window:not(:is([titlepreface*="᠎"], [titlepreface*="‍"])):not([popup-window], [chromehidden~="toolbar"]):not([inDOMFullscreen="true"]){
   /* set left margin to sidebar width */
   --left-margin: var(--sdbr-wdt) !important;
 }
@@ -58,6 +58,35 @@ Styles for sidebar
   }
 }
 
+/* The sidebar page paints the panel. The backing lives inside the rounded
+   panel only, so it can never paint outside it. */
+#sidebar,
+#sidebar-box > .sidebar-browser-stack {
+  background-color: var(--tb-col) !important;
+}
+
+/* The page itself is opaque, so it has to be clipped to the panel's rounded
+   corners; otherwise it paints square over the rounded box (visible in the
+   hovering hidden sidebar). */
+#sidebar-box > .sidebar-browser-stack {
+  border-radius: inherit !important;
+  overflow: clip !important;
+}
+
+/* The bookmarks toolbar is the sidebar's top strip: displacement uses the
+   sidebar box transition; the whole bar fades with the Sidebery stack
+   transition (opacity, same duration/easing), and its colour is fixed. */
+#PersonalToolbar {
+  background-color: var(--tb-col) !important;
+  transition:
+    background-color 0s,
+    border-radius var(--trans-dur) ease-out,
+    left var(--trans-dur) ease-out,
+    top var(--trans-dur) ease-out,
+    width var(--trans-dur) ease-out,
+    height var(--trans-dur) ease-out !important;
+}
+
 /* styles for sidebar */
 #sidebar-box{
   
@@ -74,6 +103,26 @@ Styles for sidebar
   )!important;
   
   width: var(--sdbr-wdt) !important;
+
+  /* Nova adds padding-inline-start to #sidebar-box but not to the right side;
+     that made the Sidebery content's left inset larger than its right inset. */
+  padding-inline: 0 !important;
+
+  /* The box corner/patch must be the toolbar colour. No box border here:
+     its top edge drew the horizontal line above the panel. The panel outline
+     is provided by the hover state. */
+  background-color: var(--tb-col) !important;
+  border: none !important;
+  /* always-on sidebar is square; the hidden/hover panel keeps its rounded
+     box radius (set in the hidden block) */
+  border-radius: 0 !important;
+  transition:
+    background-color 0s,
+    border-radius var(--trans-dur) ease-out,
+    left var(--trans-dur) ease-out,
+    top var(--trans-dur) ease-out,
+    width var(--trans-dur) ease-out,
+    height var(--trans-dur) ease-out !important;
 }
 
 /* drag window by empty space in bookmarks toolbar */
@@ -98,7 +147,7 @@ Styles for sidebar
   padding-top: 2px !important;
   padding-bottom: 2px !important;
   
-  &[collapsed="true"] {display: none}
+  &[collapsed] {display: none}
 }
 
 /* padding for screenshot control buttons */
@@ -135,6 +184,9 @@ Styles for sidebar
     ) !important;
 
     border-radius: var(--big-rounding) !important;
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
     
     /* hover target (invisible box between window edge and panel) */
     &::before{
@@ -155,7 +207,31 @@ Styles for sidebar
       opacity: 0;
     }
   }
-  
+
+  /* the bar backing is transparent while parked (no ledge spill); it fades
+     out over the same 0.25s as the Sidebery stack and returns instantly. */
+  #PersonalToolbar {
+    transition:
+      background-color var(--trans-dur) ease-out,
+      border-radius var(--trans-dur) ease-out,
+      left var(--trans-dur) ease-out,
+      top var(--trans-dur) ease-out,
+      width var(--trans-dur) ease-out,
+      height var(--trans-dur) ease-out !important;
+  }
+
+  /* Sidebery backing: fades out over the same 0.25s on hover-out, and its
+     rounded <-> squared radius animates over the sidebar transition time. */
+  #sidebar-box {
+    transition:
+      background-color var(--trans-dur) ease-out,
+      border-radius var(--trans-dur) ease-out,
+      left var(--trans-dur) ease-out,
+      top var(--trans-dur) ease-out,
+      width var(--trans-dur) ease-out,
+      height var(--trans-dur) ease-out !important;
+  }
+
   /* styles for sidebar */
   #sidebar-box{    
     height: calc(
@@ -203,6 +279,12 @@ Styles for sidebar
   
   /* add rounded corners to sidebar content */
   #sidebar {border-radius: var(--big-rounding) !important;}
+
+  /* Backdrop behind the page only (first-paint workaround). The containers
+     stay transparent so the panel colour cannot spill outside the panel. */
+  #sidebar {
+    background-color: var(--pp-col) !important;
+  }
   
   /* styles for bookmarks */
   #PersonalToolbar{
@@ -242,16 +324,45 @@ Styles for sidebar
     #PersonalToolbar
     {
       opacity: 1 !important;
-      left: calc(var(--left-margin) + var(--margin)) !important;
+      left: calc(
+        var(--left-margin)
+        + var(--margin)
+        /* #browser sits 1px above the toolbox, so the top content border is
+           1px above --top-margin. This keeps the left gap identical to it. */
+        + 1px
+      ) !important;
       
-      background-color: var(--bg-col) !important;
-      
+      background-color: var(--tb-col) !important;
       border: var(--outline) !important;
       outline: var(--shadow) !important;
             
       &::after{opacity: 0}
       
       & > * {opacity: var(--dyn-opct);}
+    }
+
+    /* the bookmarks toolbar is a theme panel, not a Sidebery panel */
+    #PersonalToolbar {
+      background-color: var(--tb-col) !important;
+      /* opaque instantly on the way in; the hidden state owns the fade out */
+      transition:
+        background-color 0s,
+        border-radius var(--trans-dur) ease-out,
+        left var(--trans-dur) ease-out,
+        top var(--trans-dur) ease-out,
+        width var(--trans-dur) ease-out,
+        height var(--trans-dur) ease-out !important;
+    }
+
+    /* same for the Sidebery backing on the way in */
+    #sidebar-box {
+      transition:
+        background-color 0s,
+        border-radius var(--trans-dur) ease-out,
+        left var(--trans-dur) ease-out,
+        top var(--trans-dur) ease-out,
+        width var(--trans-dur) ease-out,
+        height var(--trans-dur) ease-out !important;
     }
   }
 }
@@ -307,8 +418,8 @@ Styles when Sidebery is not opened
 }
 
 /* notification when sidebar is not opened */
-#main-window[chromehidden=""]:has( 
-  #sidebar-box[hidden="true"]
+#main-window:not([popup-window], [chromehidden~="toolbar"]):has( 
+  #sidebar-box[hidden]
 ) {
   --shyfox-string-open-sidebar: "Open sidebar!";
   &[lang="ru"]{--shyfox-string-open-sidebar: "Откройте боковую панель!";}
@@ -333,7 +444,7 @@ Styles when Sidebery is not opened
 }
 
 /* styles when Sidebery is not opened but sidebar is */
-#main-window[chromehidden=""]:has(
+#main-window:not([popup-window], [chromehidden~="toolbar"]):has(
   #sidebar-box:not([hidden]):not([sidebarcommand*="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]) 
 ) {
   
@@ -401,14 +512,20 @@ Styles when Sidebery is not opened
   
   /* add rounded corners to sidebar content */
   #sidebar {border-radius: var(--big-rounding) !important;}
+
+  /* Backdrop behind the page only (first-paint workaround). The containers
+     stay transparent so the panel colour cannot spill outside the panel. */
+  #sidebar {
+    background-color: var(--pp-col) !important;
+  }
   
   /* sidebar on left (native tabs disabled, default) */
-  &:has(#sidebar-box[style*="order: 2"]){
+  &:has(#sidebar-box:not([sidebar-positionend])){
     /* there is no styles */
   }
   
   /* sidebar on right (native tabs enabled) */
-  &:has(#sidebar-box[style*="order: 4"]){
+  &:has(#sidebar-box[sidebar-positionend]){
     
     /* add checkmark to button to indicate state */
     #sidebarMenu-popup #sidebar-reverse-position {background-image: url("../icons/menu-check.svg") !important;}

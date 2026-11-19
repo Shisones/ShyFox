@@ -10,7 +10,12 @@ Styles for Sidebery extension
 
 @-moz-document regexp("^moz-extension://.*?/sidebar/sidebar.html"){ /* wrap start */
 
+  /* First paint of the Sidebery document before its app/theme exists. Use the
+     toolbar colour literally: -moz-dialog follows the OS and can be white. */
+  html { background-color: #2b2a33 !important; }
+
   #root.root {
+    --frame-bg: var(--toolbar-bg) !important;
     --general-border-radius: var(--rounding) !important;
     --general-margin: 4px !important;
     

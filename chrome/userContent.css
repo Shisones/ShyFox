@@ -4,3 +4,22 @@
 @import url("ShyFox/content/shy-about.css");
 @import url("ShyFox/content/shy-global-content.css");
 @import url("ShyFox/shy-variables.css");
+
+/* Hide scrollbars globally in content and extension pages (Sidebery,
+   about:addons, normal websites). Scrolling still works with wheel/keyboard. */
+* { scrollbar-width: none !important; }
+
+/* Sidebery is loaded through the chrome webext-panels wrapper. That wrapper's
+   html is plain light grey until the extension paints, which caused a white
+   flash when the sidebar opened. Paint it with the theme background instead. */
+@-moz-document url("chrome://browser/content/webext-panels.xhtml") {
+  html, body, #webextpanels-window, #webext-panels-stack, #webext-panels-browser {
+    background-color: transparent !important;
+  }
+}
+
+/* The blank document a sidebar/web-extension browser starts with. Use the
+   toolbar colour so it can never flash white. */
+@-moz-document url("about:blank") {
+  html, body { background-color: #2b2a33 !important; }
+}

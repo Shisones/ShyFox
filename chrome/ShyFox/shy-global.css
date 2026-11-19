@@ -10,7 +10,7 @@ Area where website is displayed
 */
 
 /* set background color */
-#appcontent .browserStack, #browser, .browserContainer {background: var(--bg-col)}
+.browserStack, #browser, .browserContainer {background: var(--bg-col)}
 
 #browser #tabbrowser-tabbox {
   /* shift website content relative to panels */
@@ -30,7 +30,7 @@ Area where website is displayed
 }
  
 /* completely remove the browser interface in fullscreen videos and popups like login with Google or in a floating Bitwarden window */
-#main-window:is(:not([chromehidden=""]), [inDOMFullscreen="true"]){
+#main-window:is([popup-window], [chromehidden~="toolbar"], [inDOMFullscreen="true"]){
   #navigator-toolbox {display: none !important;}
   --margin: 0px !important;
 }
@@ -40,13 +40,13 @@ Area where website is displayed
 #browser {z-index: 1 !important;}
 
 /* if it not fullscreen video or floating window */
-#main-window:not([inDOMFullscreen="true"])[chromehidden=""]{
+#main-window:not([inDOMFullscreen="true"]):not([popup-window], [chromehidden~="toolbar"]){
     
   /* if navbar is not hidden in f11 fullscreen or not only navbar is visible in f11 or window is not maximized in clean mode */
   &:not(
     :is(
-      :is([titlepreface*="‌"], [titlepreface*="᠎"][titlepreface*="​"])[inFullscreen="true"]),
-      [titlepreface*="‍"]:is([sizemode="maximized"], [inFullscreen="true"], [gtktiledwindow="true"])
+      :is([titlepreface*="‌"], [titlepreface*="᠎"][titlepreface*="​"])[inFullscreen]),
+      [titlepreface*="‍"]:is([sizemode="maximized"], [inFullscreen], [gtktiledwindow="true"])
   ){
     
     /* add rounded corners and outline to browser content */
@@ -59,7 +59,8 @@ Area where website is displayed
     #tabbrowser-tabpanels::after {
       content: "";
       margin: -1px;
-      border: var(--outline);
+      /* Keep only the #tabbrowser-tabbox border. A second 1px border here
+         overlapped it on the top/left but was clipped on the right/bottom. */
       position: absolute;
       inset: 0;
       border-radius: var(--big-rounding);
@@ -70,18 +71,18 @@ Area where website is displayed
   }
   
   /* if in f11 fullscreen sidebar active but navbar not */
-  &:not([titlepreface*="‍"]):not([titlepreface*="᠎"])[titlepreface*="‌"][inFullscreen="true"]{
-    #appcontent browser {border-left: var(--outline);}
+  &:not([titlepreface*="‍"]):not([titlepreface*="᠎"])[titlepreface*="‌"][inFullscreen]{
+    #tabbrowser-tabpanels browser {border-left: var(--outline);}
   }
   
   /* if in f11 fullscreen toolbar active but navbar not */
-  &:not([titlepreface*="‍"]):not([titlepreface*="​"])[titlepreface*="‌"][inFullscreen="true"]{
-    #appcontent browser {border-right: var(--outline);}
+  &:not([titlepreface*="‍"]):not([titlepreface*="​"])[titlepreface*="‌"][inFullscreen]{
+    #tabbrowser-tabpanels browser {border-right: var(--outline);}
   }
   
   /* if in f11 fullscreen nor toolbar or sidebar active but navbar is */
-  &:not([titlepreface*="‍"])[titlepreface*="᠎"][titlepreface*="​"]:not([titlepreface*="‌"])[inFullscreen="true"]{
-    #appcontent browser {border-top: var(--outline);}
+  &:not([titlepreface*="‍"])[titlepreface*="᠎"][titlepreface*="​"]:not([titlepreface*="‌"])[inFullscreen]{
+    #tabbrowser-tabpanels browser {border-top: var(--outline);}
   }
 }
 
@@ -121,22 +122,33 @@ Area where website is displayed
 
 /* left */
 #navigator-toolbox::before{
-  width: calc(var(--bottom-margin) + 2px);
+  width: calc(var(--left-margin) + 2px);
   left: -1px;
-  height: 100vw;
+  height: 100vh;
 }
 
 /* right */
 #navigator-toolbox::after{
   width: calc(var(--right-margin) + 2px);
   right: -1px;
-  height: 100vw;
+  height: 100vh;
 }
 
 /* statuspanel (that thing at the bottom of the screen that shows the address of the link you're hovering over) */
+#statuspanel {
+  /* equal bottom/left spacing from the content border */
+  inset-inline-start: 0 !important;
+  bottom: 0 !important;
+  margin: 0 0 calc(var(--margin) / 2) calc(var(--margin) / 2) !important;
+  padding: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+
 #statuspanel #statuspanel-label {
   padding-inline: 6px !important;
   border-radius: var(--big-rounding) !important;
+  margin: 0 !important;
   
   background-color: var(--tb-col) !important;
   color: var(--bt-col) !important;
@@ -152,7 +164,7 @@ menulist,
 button,
 select,
 input:not([type="checkbox"]),
-#urlbar-background,
+.urlbar-background,
 #preview-image,
 .ctrlTab-canvas,
 .ctrlTab-canvas *
@@ -326,12 +338,12 @@ Apply theme colors to context menus and menubar
   --toolbar-field-focus-background-color: var(--bt-col) !important;
   --panel-color: var(--bt-col) !important;  
   
-  menu:where([_moz-menuactive="true"]:not([disabled="true"])), menuitem:where([_moz-menuactive="true"]:not([disabled="true"])) {
-    background-color: var(--toolbarbutton-hover-background) !important;
+  menu:where([_moz-menuactive="true"]:not([disabled])), menuitem:where([_moz-menuactive="true"]:not([disabled])) {
+    background-color: var(--toolbarbutton-background-color-hover, var(--toolbarbutton-hover-background)) !important;
     color: var(--bt-col) !important;
   }
 
-  menu:where([disabled="true"]), menuitem:where([disabled="true"]) {
+  menu:where([disabled]), menuitem:where([disabled]) {
     background-color: transparent !important;
   }
 }
@@ -477,21 +489,22 @@ File Edit View History Bookmarks Tools Help
     visibility: visible !important;
     z-index: 5;
     
-    width: -fit-content;
+    width: fit-content !important;
     max-height: 0px;
     padding-bottom: 0 !important;
     
     transition: var(--transition) !important;
     
-    top: var(--top-margin);
-    left: var(--left-margin);
+    top: calc(var(--top-margin) + var(--margin) / 2);
+    left: calc(var(--left-margin) + var(--margin) / 2);
     
     border-radius: var(--rounding);
     background-color: var(--tb-col) !important;
     & > * {opacity: var(--dyn-opct);}
     
     /* outline only when visible */
-    &:not([inactive="true"]) {
+    &:not([inactive]) {
+      max-height: none !important;
       border: var(--outline) !important;
       outline: var(--shadow) !important;
     }

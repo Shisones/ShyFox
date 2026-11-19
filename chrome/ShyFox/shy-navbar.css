@@ -13,16 +13,16 @@ Navigation bar on top of the window
 }
 
 /* if navbar is not hidden, this window is not floating popup and not in fullscreen video */
-#main-window:not(:is([titlepreface*="‌"], [titlepreface*="‍"]))[chromehidden=""]:not([inDOMFullscreen="true"]){
+#main-window:not(:is([titlepreface*="‌"], [titlepreface*="‍"])):not([popup-window], [chromehidden~="toolbar"]):not([inDOMFullscreen="true"]){
   /* set top margin to navbar height */
   --top-margin: calc(var(--toolbar-item-hgt)) !important;
 }
 
 /* padding tweak */
 .toolbaritem-combined-buttons:not([widget-type="button-and-view"], [widget-type="custom"]), .toolbaritem-menu-buttons {
-  margin-inline-end: var(--toolbar-start-end-padding) !important;
+  margin-inline-end: var(--toolbar-padding-inline, var(--toolbar-start-end-padding)) !important;
 }
-#nav-bar-overflow-button {margin-inline-end: calc(var(--toolbar-start-end-padding) / 2) !important;}
+#nav-bar-overflow-button {margin-inline-end: calc(var(--toolbar-padding-inline, var(--toolbar-start-end-padding)) / 2) !important;}
 
 /* limit items height */
 #nav-bar-customization-target > * {max-height: var(--toolbar-item-hgt) !important;}
@@ -60,11 +60,11 @@ Navigation bar on top of the window
   [breakout][breakout-extend],
   :focus-within
 ) ) {
-  #urlbar-input {text-align: center !important}
+  .urlbar-input {text-align: center !important}
 }
 
 /* tab loading progress in urlbar background */
-#main-window:not([customizing]):not([titlepreface*="‌"]):has(.tabbrowser-tab[selected][busy]) #urlbar:not([breakout-extend]) #urlbar-background{
+#main-window:not([customizing]):not([titlepreface*="‌"]):has(.tabbrowser-tab[selected][busy]) #urlbar:not([breakout-extend]) .urlbar-background{
   background: linear-gradient(
     to right,
     color-mix(in srgb, var(--shy-color) 10%, transparent) 0 var(--shy-tab-load-pcent),
@@ -198,7 +198,7 @@ Navigation bar on top of the window
         + var(--hide-bar-padding)
       );
       
-      height: calc(var(--margin) - var(--hide-bar-padding) * 2);
+      height: var(--hide-bar-size);
       width: calc(100% - var(--hide-bar-wdt-pad));
       left: calc(var(--hide-bar-wdt-pad) / 2);
       
@@ -260,14 +260,6 @@ Navigation bar on top of the window
     #nav-bar-overflow-button:hover
   ) {
     #nav-bar{
-      
-      /* hotfix */
-      #urlbar{
-        opacity: 0;
-        transition: var(--trans-dur);
-      }
-
-      
       top: calc(var(--top-margin) + var(--margin));
       
       background-color: var(--tb-col) !important;
@@ -276,9 +268,24 @@ Navigation bar on top of the window
       border: var(--outline) !important;
       outline: var(--shadow) !important;
       
-      #nav-bar-customization-target > *:not([disabled="true"]),
+      #nav-bar-customization-target > *:not([disabled]),
       #nav-bar-overflow-button {opacity: 1 !important;}
-      #nav-bar-customization-target > *[disabled="true"] {opacity: 0.5 !important;}
+
+      /* the hidden navbar must be usable: reveal the real URL bar and drop
+         the decorative placeholder behind it */
+      #urlbar {
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      /* only the resting bar takes the container width; once focused/open the
+         floating-search rule owns the width (64vw) */
+      #urlbar:not(:is([focused], [open])) {
+        width: auto !important;
+      }
+      #urlbar-container::before {
+        display: none !important;
+      }
+      #nav-bar-customization-target > *[disabled] {opacity: 0.5 !important;}
       
       &::before {opacity: 0;}
       &::after {opacity: 0.1;} /* opacity of tab load progress indicator */
@@ -329,5 +336,5 @@ Navigation bar on top of the window
     background-color: var(--bg-col) !important;
   }
   
-  #urlbar-background, #searchbar {background-color: var(--tb-col) !important;}
+  .urlbar-background, #searchbar {background-color: var(--tb-col) !important;}
 }

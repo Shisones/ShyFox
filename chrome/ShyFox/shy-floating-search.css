@@ -1,52 +1,156 @@
 /*== ShyFox Floating Search =========================================================================================================================
 
-Cool floating search panel
+Firefox 160 / Nova floating search.
 
+The old ShyFox implementation relied on `[breakout][breakout-extend]`, which
+Nova's <moz-urlbar> custom element no longer sets. This version floats the
+whole `<moz-urlbar>` element itself, so the visible native bar (background,
+input and icons) moves as one. `contain` is disabled so Nova's anchored
+results popover is positioned against the viewport instead of the navbar.
 
 */
 
-/* about:config setting */
-@media not -moz-pref("shyfox.disable.floating.search") { 
-  
-  /* styles for urlbar */
-  #urlbar[breakout-extend]{
+@media not -moz-pref("shyfox.disable.floating.search") {
 
-    #urlbar-input {font-size: 23.5px !important;}
-    #urlbar-input-container, .urlbar-input-container {height: 50px !important;}
-    #urlbar-background {border-radius: var(--bigger-rounding) !important;}
-
-    #urlbar-input-container, .urlbar-input-container {
-      & > :is(box, image){
-        height: 28px !important;
-        margin-block: calc((50px - 28px) / 4) !important;
-      }
-    }
-
+  #urlbar:is([focused], [open]) {
     position: fixed !important;
+    top: 20vh !important;
+    /* centre on the content area, i.e. the same centre as the hidden navbar
+       (viewport centre ignores the left/right margins and looked shifted) */
+    left: calc(
+      (100vw + var(--left-margin) - var(--right-margin)) / 2
+      - 32vw
+    ) !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 64vw !important;
+    height: 50px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    /* The urlbar normally has contain:layout; it makes fixed descendants
+       resolve against the bar instead of the viewport. */
+    contain: none !important;
+    overflow: visible !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     z-index: 999999 !important;
 
-    bottom: auto !important;
-    top: 20vh !important;
+    --urlbar-height: 50px !important;
+    --urlbarview-border-radius: var(--bigger-rounding) !important;
 
-    left: 18vw !important;
-    right: 18vw !important;
-    width: 64vw !important;
+    .urlbar-background {
+      position: absolute !important;
+      inset: 0 !important;
+      width: auto !important;
+      height: auto !important;
 
-    /* cool translucent background */
-    &:before{
-      content: "";
-      position: fixed;
-      pointer-events: none;
-      border-radius: var(--rounding);
-
-      width: 100vw;
-      height: 100vh;
-
-      top: -20vh;
-      left: -18vw;
-
-      background-color: color-mix(in srgb, var(--bg-col) 50%, transparent);
+      background-color: var(--tb-col) !important;
+      background-image: none !important;
+      border: var(--outline) !important;
+      outline: var(--shadow) !important;
+      box-shadow: none !important;
+      border-radius: var(--bigger-rounding) !important;
     }
-  } 
-}
 
+    .urlbar-input-container {
+      height: 100% !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    .urlbar-input {
+      font-size: 23.5px !important;
+      padding-inline-start: 6px !important;
+      text-align: left !important;
+    }
+
+    .searchmode-switcher {
+      height: 28px !important;
+      margin-block: calc((50px - 28px) / 2) !important;
+      margin-inline-start: 8px !important;
+      border-radius: var(--rounding) !important;
+      background-color: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    .searchmode-switcher:hover {
+      background-color: var(--toolbarbutton-background-color-hover, var(--toolbarbutton-hover-background)) !important;
+    }
+
+    .urlbar-input-container > :is(box, image) {
+      height: 28px !important;
+      margin-block: calc((50px - 28px) / 2) !important;
+    }
+  }
+
+  /* Hide the navbar's fake URL field while the real one is floated. */
+  #main-window:has(#urlbar:is([focused], [open])) #urlbar-container::before {
+    opacity: 0 !important;
+  }
+
+  /* Dim the page behind the floating bar. */
+  #main-window:has(#urlbar:is([focused], [open])) #tabbrowser-tabpanels::after {
+    background-color: rgba(0, 0, 0, 0.35) !important;
+    background-color: color-mix(in srgb, var(--bg-col) 50%, transparent) !important;
+  }
+
+  /* Recommendation list: same opaque toolbar colour as the floating bar.
+     The extra urlbarView-background layer is 30% black by default and made the
+     popup darker than the bar. */
+  #urlbar[open] .urlbarView,
+  #urlbar[open] .urlbarView-body-outer,
+  #urlbar[open] .urlbarView-body-inner {
+    background-color: var(--tb-col) !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+  }
+
+  #urlbar[open] .urlbarView-background {
+    background-color: transparent !important;
+    /* this layer sits above the bar and its shadow drew the seam line */
+    box-shadow: none !important;
+  }
+
+  #urlbar[open] .urlbarView {
+    /* overlap only the bar's bottom padding (icons end at 39px of the 50px
+       bar); -11px stops the results panel from overpainting the icons */
+    margin-top: -11px !important;
+    width: 64vw !important;
+    /* 3px (not 4px): on the user's font/zoom the anchored view lands 3px left,
+       so this lines its left/right edges up with the bar's exactly. */
+    translate: 3px 0 !important;
+    border: var(--outline) !important;
+    border-top: none !important;
+    outline: none !important;
+    border-radius: 0 0 var(--bigger-rounding) var(--bigger-rounding) !important;
+    overflow: clip !important;
+  }
+
+  #urlbar[open] {
+    /* The bar box itself is painted, not only .urlbar-background, so no
+       transparent band can appear inside the bar regardless of the child
+       element's height/anchoring. */
+    background-color: var(--tb-col) !important;
+    border-radius: var(--bigger-rounding) var(--bigger-rounding) 0 0 !important;
+  }
+
+  /* Firefox uses this span for the search-mode switch/hotkey hint; the
+     theme's global rules made it visible as a stray letter. */
+  #urlbar .urlbar-visually-hidden {
+    display: none !important;
+  }
+
+  /* the bar's background itself extends 24px below the bar. Using the real
+     .urlbar-background element (not a pseudo) guarantees its side borders are
+     painted through the gap, whatever the font/zoom anchoring does. */
+  #urlbar[open] .urlbar-background {
+    height: calc(100% + 24px) !important;
+    bottom: auto !important;
+    border-bottom: none !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    outline: none !important;
+  }
+}
