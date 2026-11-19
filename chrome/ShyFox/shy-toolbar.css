@@ -412,7 +412,7 @@ every icon. Layout/order/separator behaviour is left unchanged.
   min-height: 1px !important;
   max-height: 1px !important;
   padding: 0 !important;
-  margin: calc((var(--toolbar-item-hgt) - 1px) / 2) auto !important;
+  margin: 4px auto !important;
   border-radius: var(--rounding) !important;
   background-color: color-mix(in srgb, var(--bt-col) 15%, transparent) !important;
   scale: 1 !important;
