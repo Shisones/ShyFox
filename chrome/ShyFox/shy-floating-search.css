@@ -90,11 +90,7 @@ results popover is positioned against the viewport instead of the navbar.
     opacity: 0 !important;
   }
 
-  /* Dim the page behind the floating bar. */
-  #main-window:has(#urlbar:is([focused], [open])) #tabbrowser-tabpanels::after {
-    background-color: rgba(0, 0, 0, 0.35) !important;
-    background-color: color-mix(in srgb, var(--bg-col) 50%, transparent) !important;
-  }
+  /* The page is deliberately left untinted while the floating search is open. */
 
   /* Recommendation list: same opaque toolbar colour as the floating bar.
      The extra urlbarView-background layer is 30% black by default and made the
@@ -118,8 +114,7 @@ results popover is positioned against the viewport instead of the navbar.
        bar); -11px stops the results panel from overpainting the icons */
     margin-top: -11px !important;
     width: 64vw !important;
-    /* 3px (not 4px): on the user's font/zoom the anchored view lands 3px left,
-       so this lines its left/right edges up with the bar's exactly. */
+    /* exact: the anchored view lands 3px left of the bar */
     translate: 3px 0 !important;
     border: var(--outline) !important;
     border-top: none !important;
